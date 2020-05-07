@@ -1,0 +1,46 @@
+<form id="edit-form" class="form-horizontal" role="form" data-toggle="validator" method="POST" action="">
+
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Subdomain')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-subdomain" class="form-control" type="text" value="{$row.subdomain|htmlentities}" disabled="disabled">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Url')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-url" class="form-control" name="row[url]" type="text" value="{$row.url|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Title')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-title" class="form-control" name="row[title]" type="text" value="{$row.title|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Size')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-size" class="form-control" name="row[size]" type="text" value="{$row.size|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Status')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-status" class="form-control" name="row[status]" type="text" value="{$row.status|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Fingerprint')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <textarea id="c-fingerprint" class="form-control " rows="5" name="row[fingerprint]" cols="50">{$row.fingerprint|htmlentities}</textarea>
+        </div>
+    </div>
+    <div class="form-group layer-footer">
+        <label class="control-label col-xs-12 col-sm-2"></label>
+        <div class="col-xs-12 col-sm-8">
+            <button type="submit" class="btn btn-success btn-embossed disabled">{:__('OK')}</button>
+            <button type="reset" class="btn btn-default btn-embossed">{:__('Reset')}</button>
+        </div>
+    </div>
+</form>

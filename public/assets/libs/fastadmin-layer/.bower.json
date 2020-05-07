@@ -1,0 +1,29 @@
+{
+  "name": "layer",
+  "main": "src/layer.js",
+  "version": "3.1.4",
+  "homepage": "https://github.com/sentsin/layer",
+  "authors": [
+    "sentsin <xu@sentsin.com>"
+  ],
+  "description": "弹窗组件",
+  "moduleType": [
+    "amd",
+    "globals"
+  ],
+  "keywords": [
+    "layer",
+    "layui",
+    "dialog"
+  ],
+  "license": "MIT",
+  "_release": "3.1.4",
+  "_resolution": {
+    "type": "version",
+    "tag": "3.1.4",
+    "commit": "a8d7e3f945a8249b42ea2771e262877e623057fb"
+  },
+  "_source": "https://github.com/karsonzhang/fastadmin-layer.git",
+  "_target": "~3.1.2",
+  "_originalSource": "fastadmin-layer"
+}
