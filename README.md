@@ -1,6 +1,7 @@
 # Shots
 
 ## 项目简介
+更新Shots的同时，别忘了ShotsScan也要
 
 由于目前项目正在开发中，可能会出现很多BUG，大家可以提到Issues等待修复
 
