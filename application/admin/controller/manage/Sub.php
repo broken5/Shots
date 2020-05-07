@@ -38,21 +38,35 @@ class Sub extends Backend
         if ($this->request->isPost()) {
             $params = $this->request->post("row/a");
             if ($params) {
-                $count = 0;
-                $subdomain_data = str_replace("\r", '', $params['domain']);
                 $project_name = $params['project_name'];
+                $subdomain_data = str_replace("\r", '', $params['subdomain']);
                 $subdomain_list = explode("\n", $subdomain_data);
-                foreach($subdomain_list as $k => $v){
-                    $subdomain_list[$k] = strtolower(trim($v));
-                }
-                $exists_domain = (new Domain())->existsDomain($subdomain_list);
-                $new_domain_list = array_diff($subdomain_list, $exists_domain);
-                $domain_list = collection((new Domain())->field('domain')->select())->toArray();
-                foreach ($new_domain_list as $value){
-                    foreach ($domain_list as $domain){
-                        $pattern = str_replace('.', '\\.', $domain['domain']);
-                        if(preg_match("/({$pattern})$/is", $value)){
-                            $this->model->addSubDomian($domain['domain'], $value, '', '', '', '');
+
+                $domain_data = str_replace("\r", '', $params['domain']);
+                $domain_list = explode("\n", $domain_data);
+
+                $domain_list= format_domain($domain_list);
+                $subdomain_list = format_domain($subdomain_list);
+                $exists_subdomain = $this->model->existsSubDomain($subdomain_list);
+                $exists_domain = (new Domain())->existsDomain($domain_list);
+                $new_subdomain_list = array_diff($subdomain_list, $exists_subdomain);
+                foreach ($domain_list as $domain){
+                    if(!in_array($domain, $exists_domain)) {
+                        $insert_domain = ['domain'=>$domain, 'project_name'=>$project_name, 'sub_flag'=>'import'];
+                        (new Domain())->data($insert_domain, true)->isUpdate(false)->save();
+                    }
+                    $pattern = '/'.str_replace('.', '\\.', $domain).'$/is';
+                    foreach ($new_subdomain_list as $subdomain){
+                        if(preg_match($pattern, $subdomain)){
+                            $insert_subdomain = [
+                                'domain'=>$domain,
+                                'subdomain'=>$subdomain,
+                                'subdomain_ip'=>'',
+                                'city'=>'',
+                                'alivescan'=>'no_scan',
+                                'portscan'=>'no_scan',
+                                ];
+                            $this->model->data($insert_subdomain, true)->isUpdate(false)->save();
                         }
                     }
                 }

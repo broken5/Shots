@@ -28,10 +28,12 @@ class Domain extends Model
 
     ];
     public function existsDomain($domain_list){
-        $res = $this->where('domain','in', $domain_list)->select();
         $exists_domain = [];
-        foreach ($res as $v) {
-            $exists_domain[] = $v->domain;
+        $res = $this->field('domain')->where('domain','in', $domain_list)->select();
+        if($res){
+            foreach ($res as $v) {
+                $exists_domain[] = $v->domain;
+            }
         }
         return $exists_domain;
     }

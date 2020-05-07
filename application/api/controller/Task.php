@@ -86,19 +86,48 @@ class Task extends Api
             if($domain_data and $domain_data['code'] == 1 and $domain_data['domain']){
                 $domain = $domain_data['domain'];
                 $domain_data['count'] = 0;
-
-                // 子域名入库
-                foreach ($domain_data['data'] as $v){
+                $pattern = '/'.str_replace('.','\\.', $domain).'$/is';
+                // 取出所有子域名
+                $subdomain_list = array_column($domain_data['data'], 'subdomain');
+                // 获取已经存在的子域名
+                $exists_domain = (new Sub())->existsSubDomain($subdomain_list);
+                // 对比列表，过滤出不存在的子域名
+                $new_subdomain_list = array_diff($subdomain_list, $exists_domain);
+                $subdomain_data = [];
+                // 格式化数据
+                foreach ($domain_data['data'] as $k => $v){
                     $subdomain = $v['subdomain'];
-                    $ip = $v['subdomain_ip'];
-                    $city = $v['city'];
-                    $is_private = $v['is_private'];
-                    $is_cdn = $v['is_cdn'];
-                    if(substr($subdomain, strpos($subdomain, '.')+1)==$domain){
-                        $sub->addSubDomian($domain, $subdomain, $ip, $city, $is_private, $is_cdn);
-                        $domain_data['count'] += 1;
+                    if(preg_match($pattern, $subdomain) and in_array($v['subdomain'], $new_subdomain_list)){
+                        $ip = $v['subdomain_ip'];
+                        $city = $v['city'];
+                        $is_private = $v['is_private'];
+                        $is_cdn = $v['is_cdn'];
+                        if($is_private){
+                           $portscan = 'is_private';
+                           $alivescan = 'is_private';
+                        }else if($is_cdn){
+                            $portscan = 'is_cdn';
+                            $alivescan = 'no_scan';
+                        }else if(!$ip){
+                            $portscan = 'no_ip';
+                            $alivescan = 'no_scan';
+                        }
+                        else{
+                            $portscan = 'no_scan';
+                            $alivescan = 'no_scan';
+                        }
+
+                        $subdomain_data[] = [
+                            'domain'=>$domain,
+                            'subdomain'=>$subdomain,
+                            'subdomain_ip'=>$ip,
+                            'city'=>$city,
+                            'portscan'=>$portscan,
+                            'alivescan'=>$alivescan,
+                        ];
                     }
                 }
+                (new Sub())->saveAll($subdomain_data);
 
                 // 更新域名扫描状态
                 $data = ['sub_flag'=>'is_scan', 'updatetime'=>time()];
@@ -109,6 +138,7 @@ class Task extends Api
             }elseif($domain_data['code']==0 and $domain_data['domain']){
                 // 存储上传数据失败日志
                 $domain_data['count'] = 0;
+                (new Domain())->update(['sub_flag'=>'failed'], ['domain'=>$domain_data['domain']]);
                 (new Log())->add_log($domain_data, 'subdomain');
             }
 
@@ -124,7 +154,7 @@ class Task extends Api
         if($this->request->isPost()){
             (new App())->check_key($this->request->get('key'), $this->username, 'portscan');
             // 获取未扫描端口的域名
-            $tmp = (new Sub())->where('portscan', 'in', ['no_scan', '', null])->find();
+            $tmp = (new Sub())->where('portscan', 'no_scan')->find();
             if(!$tmp){
                 $this->error('无数据', []);
             }else{
@@ -151,9 +181,8 @@ class Task extends Api
                         $version = $v['version'];
                         (new Ports())->addPorts($subdomain, $ip, $port, $service, $product, $version);
                     }
-
                     // 更新端口状态为已扫描
-                    $data = ['portscan'=>'is_scan', 'updatetime'=>time()];
+                    $data = ['portscan'=>'re', 'updatetime'=>time()];
                     (new Sub())->where('subdomain', $subdomain)->update($data);
 
                     // 告诉端口扫描脚本该IP已经被扫描过

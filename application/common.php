@@ -422,6 +422,17 @@ function is_domain($domain){
     }
 }
 
-function gen_log($data){
-
+function format_domain($list){
+    if (is_array($list)){
+        foreach($list as $k => $v){
+            if(is_domain($v)){
+                $list[$k] = strtolower(trim($v));
+            }else{
+                unset($list[$k]);
+            }
+        }
+    }else{
+        $list = strtolower(trim($list));
+    }
+    return $list;
 }

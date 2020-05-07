@@ -28,11 +28,11 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                         {field: 'id', title: __('Id')},
                         {field: 'domain', title: __('Domain')},
                         {field: 'project_name', title: __('Project_name')},
-                        {field: 'sub_flag', title: __('Sub_flag'), formatter: Table.api.formatter.status, custom: {is_scan: 'success', no_scan: 'danger', scan: 'info'},searchList: {is_scan: '已扫描', no_scan: '未扫描', scan: '扫描中'}},
+                        {field: 'sub_flag', title: __('Sub_flag'), formatter: Table.api.formatter.status, custom: {is_scan: 'success', no_scan: 'gray', scan: 'info', failed: 'danger', import: 'warning'},searchList: {is_scan: '已扫描', no_scan: '未扫描', scan: '扫描中', failed: '失败'}},
                         {field: 'createtime', title: __('Createtime'), operate:'RANGE', addclass:'datetimerange'},
                         {field: 'updatetime', title: __('Updatetime'), operate:'RANGE', addclass:'datetimerange'},
                         {field: 'operate', title: __('Operate'), table: table, buttons: [
-                                {name: 'add_sub', text: '添加子域名', title: '添加子域名', icon: 'fa fa-list', classname: 'btn btn-xs btn-primary btn-dialog', url: 'src/domain/add_sub'}
+                                {name: 'add_sub', text: '', title: '添加子域名', icon: 'fa fa-ioxhost', classname: 'btn btn-xs btn-primary btn-dialog', url: 'src/domain/add_sub'}
                                 ], events: Table.api.events.operate, formatter: Table.api.formatter.operate
                         }
                     ]

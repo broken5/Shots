@@ -28,13 +28,14 @@ class Sub extends Model
     ];
 
     public function existsSubDomain($subdomain){
-        $row = $this->where('subdomain', $subdomain)->find();
+        $exists_subdomain = [];
+        $row = $this->where('subdomain','in' , $subdomain)->select();
         if($row){
-            return true;
+            foreach ($row as $v){
+                $exists_subdomain[] = $v->subdomain;
+            }
         }
-        else{
-            return false;
-        }
+        return $exists_subdomain;
     }
 
     public function addSubDomian($domain, $subdomain, $ip, $city, $is_private, $is_cdn)

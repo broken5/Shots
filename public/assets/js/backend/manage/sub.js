@@ -30,13 +30,13 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                         {field: 'subdomain', title: __('Subdomain')},
                         {field: 'subdomain_ip', title: __('Subdomain_ip')},
                         {field: 'city', title: __('City')},
-                        {field: 'alivescan', title: __('Alivescan'), formatter: Table.api.formatter.status, custom: {is_scan: 'success', no_scan: 'danger', scan: 'info', failed: 'danger'},searchList: {is_scan: '已扫描', no_scan: '未扫描', scan: '扫描中', is_private: '跳过', 'failed': '失败'}},
-                        {field: 'portscan', title: __('Portscan'), formatter: Table.api.formatter.status, custom: {is_scan: 'success', no_scan: 'danger', scan: 'info', failed: 'danger'},searchList: {is_scan: '已扫描', no_scan: '未扫描', scan: '扫描中', is_private: '跳过', is_cdn: '跳过', 'failed': '失败'}},
+                        {field: 'alivescan', title: __('Alivescan'), formatter: Table.api.formatter.status, custom: {is_scan: 'success', no_scan: 'gray', scan: 'info', failed: 'danger'},searchList: {is_scan: '已扫描', no_scan: '未扫描', scan: '扫描中', is_private: '跳过', failed: '失败'}},
+                        {field: 'portscan', title: __('Portscan'), formatter: Table.api.formatter.status, custom: {is_scan: 'success', no_scan: 'gray', scan: 'info', failed: 'danger', re: 'warning', no_ip: 'warning'},searchList: {is_scan: '已扫描', no_scan: '未扫描', scan: '扫描中', is_private: '跳过', is_cdn: '跳过', no_ip: '跳过', failed: '失败', re: '重复'}},
                         {field: 'createtime', title: __('Createtime'), operate:'RANGE', addclass:'datetimerange'},
                         {field: 'updatetime', title: __('Updatetime'), operate:'RANGE', addclass:'datetimerange'},
                         {field: 'operate', title: __('Operate'), table: table, buttons: [
-                            {name: 'add_ports', text: '添加端口', title: '添加端口', icon: 'fa fa-list', classname: 'btn btn-xs btn-primary btn-dialog', url: 'manage/sub/add_ports'},
-                            {name: 'add_alive', text: '添加存活', title: '添加存活', icon: 'fa fa-list', classname: 'btn btn-xs btn-primary btn-dialog', url: 'manage/sub/add_alive'}
+                            {name: 'add_ports', text: '', title: '添加端口', icon: 'fa fa-superpowers', classname: 'btn btn-xs btn-primary btn-dialog', url: 'manage/sub/add_ports'},
+                            {name: 'add_alive', text: '', title: '添加存活', icon: 'fa fa-internet-explorer', classname: 'btn btn-xs btn-primary btn-dialog', url: 'manage/sub/add_alive'}
                             ], events: Table.api.events.operate, formatter: Table.api.formatter.operate}
                     ]
                 ]
